@@ -7,19 +7,25 @@ import plotly.graph_objects as go
 # =========================
 st.set_page_config(page_title="Modelo de Leontief", layout="wide")
 
-# =========================
-# COLOR
-# =========================
 COLOR = "#8e44ad"
 
 # =========================
-# ESTILO + ANIMACIONES PRO
+# ESTILO + CENTRADO + ANIMACIONES
 # =========================
 st.markdown(f"""
 <style>
-body {{
+html, body, .stApp {{
+    height: 100%;
     background-color: #0e1117;
     color: white;
+}}
+
+.center-screen {{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
 }}
 
 .title {{
@@ -27,11 +33,12 @@ body {{
     font-weight:900;
     text-align:center;
     color:{COLOR};
+    margin-bottom:20px;
     animation: fadeIn 1.2s ease-in;
 }}
 
 .section {{
-    font-size:42px;
+    font-size:40px;
     font-weight:bold;
     text-align:center;
     color:{COLOR};
@@ -45,12 +52,11 @@ body {{
     border-radius:15px;
     text-align:center;
     border:1px solid #2a2f3a;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s;
 }}
 
 .card:hover {{
-    transform: translateY(-8px);
-    box-shadow:0px 8px 25px rgba(0,0,0,0.6);
+    transform: scale(1.05);
 }}
 
 div.stButton > button {{
@@ -68,20 +74,20 @@ div.stButton > button:hover {{
 }}
 
 @keyframes fadeIn {{
-    from {{ opacity: 0; transform: translateY(20px); }}
+    from {{ opacity: 0; transform: translateY(25px); }}
     to {{ opacity: 1; transform: translateY(0); }}
 }}
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# CONTROL
+# ESTADO
 # =========================
 if "pantalla" not in st.session_state:
     st.session_state.pantalla = "inicio"
 
 # =========================
-# MATRIZ
+# MATRIZ A
 # =========================
 A = np.array([
     [0.15, 0.05, 0.10, 0.02],
@@ -91,19 +97,21 @@ A = np.array([
 ])
 
 # =========================
-# INICIO
+# PANTALLA INICIO (CENTRADA)
 # =========================
 if st.session_state.pantalla == "inicio":
 
+    st.markdown("""
+    <div class="center-screen">
+    """, unsafe_allow_html=True)
+
     st.markdown('<p class="title">📊 Modelo de Leontief</p>', unsafe_allow_html=True)
 
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    if st.button("🚀 Iniciar análisis", use_container_width=True):
+        st.session_state.pantalla = "formulario"
+        st.rerun()
 
-    c1, c2, c3 = st.columns([2,3,2])
-    with c2:
-        if st.button("🚀 Iniciar análisis", use_container_width=True):
-            st.session_state.pantalla = "formulario"
-            st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # =========================
 # FORMULARIO
@@ -155,6 +163,9 @@ elif st.session_state.pantalla == "resultados":
 
     st.markdown('<p class="section">📊 Resultados</p>', unsafe_allow_html=True)
 
+    # =========================
+    # TARJETAS
+    # =========================
     cols = st.columns(4)
 
     for i in range(4):
@@ -185,13 +196,16 @@ elif st.session_state.pantalla == "resultados":
     st.plotly_chart(fig, use_container_width=True)
 
     # =========================
-    # INTERPRETACIÓN
+    # INTERPRETACIÓN (ACTUALIZADA ✅)
     # =========================
     max_sector = sectores[np.argmax(x)]
 
     st.markdown(f"""
     ### 🧠 Interpretación
-    El sector con mayor impacto es **{max_sector}**, ya que requiere mayor producción.
+    El sector con mayor producción total requerida es **{max_sector}**.
+
+    Esto indica que este sector genera una mayor demanda indirecta 
+    dentro del sistema económico, siendo clave en la interdependencia entre sectores.
     """)
 
     # =========================
