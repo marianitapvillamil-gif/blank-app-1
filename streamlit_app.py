@@ -10,12 +10,11 @@ st.set_page_config(page_title="Modelo de Leontief", layout="wide")
 COLOR = "#8e44ad"
 
 # =========================
-# ESTILO + CENTRADO
+# ESTILO + CENTRADO RESPONSIVE
 # =========================
 st.markdown(f"""
 <style>
 html, body, .stApp {{
-    height: 100%;
     background-color: #0e1117;
     color: white;
 }}
@@ -25,7 +24,8 @@ html, body, .stApp {{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    min-height: 70vh;
+    padding-top: 5vh;
 }}
 
 .title {{
@@ -33,6 +33,7 @@ html, body, .stApp {{
     font-weight:900;
     text-align:center;
     color:{COLOR};
+    margin-bottom:30px;
 }}
 
 .section {{
@@ -49,6 +50,7 @@ html, body, .stApp {{
     border-radius:15px;
     text-align:center;
     border:1px solid #2a2f3a;
+    transition: transform 0.3s;
 }}
 
 .card:hover {{
@@ -63,9 +65,9 @@ div.stButton > button {{
     font-size:18px;
 }}
 
-@keyframes fadeIn {{
-    from {{ opacity: 0; }}
-    to {{ opacity: 1; }}
+div.stButton > button:hover {{
+    background-color:#6d2c91;
+    transform: scale(1.05);
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -87,7 +89,7 @@ A = np.array([
 ])
 
 # =========================
-# PANTALLA INICIO
+# INICIO (CENTRADO BIEN)
 # =========================
 if st.session_state.pantalla == "inicio":
 
@@ -151,9 +153,7 @@ elif st.session_state.pantalla == "resultados":
 
     st.markdown('<p class="section">📊 Resultados</p>', unsafe_allow_html=True)
 
-    # =========================
-    # TARJETAS (CORREGIDAS ✅)
-    # =========================
+    # TARJETAS CORREGIDAS ✅
     cols = st.columns(4)
 
     for i in range(4):
@@ -167,9 +167,7 @@ elif st.session_state.pantalla == "resultados":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # =========================
     # GRÁFICA
-    # =========================
     fig = go.Figure()
 
     fig.add_bar(x=sectores, y=d, name="Demanda", marker_color="#3498db")
@@ -183,9 +181,7 @@ elif st.session_state.pantalla == "resultados":
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # =========================
-    # INTERPRETACIÓN (TU TEXTO ✅)
-    # =========================
+    # INTERPRETACIÓN ✅ (LA TUYA)
     max_sector = sectores[np.argmax(x)]
 
     st.markdown(f"""
@@ -193,12 +189,10 @@ elif st.session_state.pantalla == "resultados":
     El sector con mayor producción total requerida es **{max_sector}**.
 
     Esto indica que este sector genera una mayor demanda indirecta 
-    dentro del sistema económico.
+    dentro del sistema económico, siendo clave en la interdependencia entre sectores.
     """)
 
-    # =========================
     # BOTÓN VOLVER
-    # =========================
     st.markdown("<br>", unsafe_allow_html=True)
 
     c1, c2, c3 = st.columns([2,3,2])
