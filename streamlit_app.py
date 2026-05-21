@@ -10,7 +10,7 @@ st.set_page_config(page_title="Modelo de Leontief", layout="wide")
 COLOR = "#8e44ad"
 
 # =========================
-# ESTILO PREMIUM
+# ESTILO FINAL CORRECTO
 # =========================
 st.markdown(f"""
 <style>
@@ -20,39 +20,37 @@ html, body, .stApp {{
     color: white;
 }}
 
-.container {{
+.center-wrapper {{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    height: 75vh;
 }}
 
-.box {{
+.center-box {{
     width: 100%;
-    max-width: 500px;
+    max-width: 450px;
     text-align: center;
-    animation: fadeIn 1s ease;
 }}
 
 .title {{
-    font-size:65px;
-    font-weight:900;
-    color:{COLOR};
-    margin-bottom:30px;
-    animation: fadeUp 1s ease;
-}}
-
-.section {{
-    font-size:38px;
-    font-weight:bold;
-    text-align:center;
+    font-size:50px;
+    font-weight:800;
     color:{COLOR};
     margin-bottom:25px;
 }}
 
+.section {{
+    font-size:34px;
+    font-weight:bold;
+    text-align:center;
+    color:{COLOR};
+    margin-bottom:20px;
+}}
+
 .card {{
     background-color:#1c1f26;
-    padding:20px;
+    padding:18px;
     border-radius:15px;
     text-align:center;
     border:1px solid #2a2f3a;
@@ -60,32 +58,21 @@ html, body, .stApp {{
 }}
 
 .card:hover {{
-    transform: translateY(-8px);
-    box-shadow:0px 10px 25px rgba(0,0,0,0.5);
+    transform: translateY(-5px);
+    box-shadow:0px 10px 20px rgba(0,0,0,0.4);
 }}
 
 div.stButton > button {{
     background-color:{COLOR};
     color:white;
     border-radius:12px;
-    height:55px;
-    font-size:18px;
-    transition: all 0.3s ease;
+    height:50px;
+    font-size:17px;
 }}
 
 div.stButton > button:hover {{
     background-color:#6d2c91;
-    transform: scale(1.05);
-}}
-
-@keyframes fadeUp {{
-    from {{ opacity:0; transform:translateY(30px); }}
-    to {{ opacity:1; transform:translateY(0); }}
-}}
-
-@keyframes fadeIn {{
-    from {{ opacity:0; }}
-    to {{ opacity:1; }}
+    transform: scale(1.03);
 }}
 
 </style>
@@ -108,11 +95,11 @@ A = np.array([
 ])
 
 # =========================
-# INICIO
+# INICIO (CENTRADO REAL)
 # =========================
 if st.session_state.pantalla == "inicio":
 
-    st.markdown('<div class="container"><div class="box">', unsafe_allow_html=True)
+    st.markdown('<div class="center-wrapper"><div class="center-box">', unsafe_allow_html=True)
 
     st.markdown('<div class="title">📊 Modelo de Leontief</div>', unsafe_allow_html=True)
 
@@ -139,7 +126,7 @@ elif st.session_state.pantalla == "formulario":
         manufactura = st.number_input("🏭 Manufactura", value=150.0)
         construccion = st.number_input("🏗️ Construcción", value=120.0)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>")
 
     c1, c2, c3 = st.columns([2,3,2])
     with c2:
@@ -171,7 +158,7 @@ elif st.session_state.pantalla == "resultados":
 
     st.markdown('<div class="section">📊 Resultados</div>', unsafe_allow_html=True)
 
-    # TARJETAS
+    # TARJETAS ✅
     cols = st.columns(4)
 
     for i in range(4):
@@ -185,7 +172,7 @@ elif st.session_state.pantalla == "resultados":
 
     st.markdown("<br>")
 
-    # GRÁFICA
+    # GRÁFICA ✅
     fig = go.Figure()
 
     fig.add_bar(x=sectores, y=d, name="Demanda", marker_color="#3498db")
@@ -199,7 +186,7 @@ elif st.session_state.pantalla == "resultados":
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # INTERPRETACIÓN
+    # INTERPRETACIÓN ✅
     max_sector = sectores[np.argmax(x)]
 
     st.markdown(f"""
