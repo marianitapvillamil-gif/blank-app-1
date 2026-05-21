@@ -96,18 +96,11 @@ if "pantalla" not in st.session_state:
 # SECTORES
 # =========================
 sectores_totales = [
-    "Ganadería 🐄",
-    "Minas ⛏️",
-    "Manufactura 🏭",
-    "Construcción 🏗️",
-    "Comercio 🛒",
-    "Transporte 🚚",
-    "Energía ⚡",
-    "Servicios 💼"
 ]
 
 # =========================
-# MATRIZ GENERAL 8x8
+# MATRIZ GENERAL
+# (basada en datos simplificados del DANE)
 # =========================
 A_total = np.array([
     [0.15,0.05,0.10,0.02,0.04,0.03,0.02,0.01],
@@ -172,8 +165,6 @@ elif st.session_state.pantalla == "info":
     Este modelo permite analizar cómo un cambio en la demanda de un sector económico
     afecta indirectamente la producción de otros sectores relacionados.
 
-    Por este aporte, Wassily Leontief recibió el Premio Nobel de Economía en 1973.
-
     ---
 
     # 🏭 ¿Qué analiza este modelo?
@@ -204,11 +195,6 @@ elif st.session_state.pantalla == "info":
     Cada valor de la matriz indica cuánto necesita un sector
     de otro sector para producir una unidad de producción.
 
-    Por ejemplo:
-
-    si manufactura necesita recursos de minería,
-    la matriz mostrará esa dependencia mediante un coeficiente numérico.
-
     ---
 
     # 🧮 Fórmula principal del modelo
@@ -223,49 +209,20 @@ elif st.session_state.pantalla == "info":
     # 📌 Explicación de cada elemento
 
     ## 🔹 Matriz A
-
-    La matriz A representa los coeficientes técnicos.
-
-    Cada número de esta matriz indica cuánto necesita un sector
-    de otro sector para producir.
-
-    Es la base principal del modelo de Leontief.
-
-    ---
+    Representa los coeficientes técnicos entre sectores económicos.
 
     ## 🔹 Matriz identidad I
-
-    La matriz identidad es una matriz especial utilizada
-    en álgebra lineal.
-
-    Tiene unos en la diagonal principal y ceros en el resto de posiciones.
-
     Se utiliza para construir la matriz (I - A).
 
-    ---
-
     ## 🔹 Vector d
-
-    El vector d representa la demanda final de los sectores económicos.
-
-    Es decir, cuánto necesita producir cada sector
-    según las necesidades del mercado.
-
-    ---
+    Representa la demanda final de los sectores económicos.
 
     ## 🔹 Vector x
-
-    El vector x representa la producción total requerida.
-
-    Incluye tanto:
-    - la demanda directa,
-    - como las necesidades indirectas entre sectores.
+    Representa la producción total requerida.
 
     ---
 
     # 📐 Conceptos matemáticos utilizados
-
-    El proyecto utiliza varios conceptos de álgebra lineal:
 
     ✅ Matrices cuadradas  
     ✅ Sistemas de ecuaciones lineales  
@@ -276,85 +233,39 @@ elif st.session_state.pantalla == "info":
 
     ---
 
-    # 🔄 Sistemas de ecuaciones lineales
-
-    El modelo de Leontief puede interpretarse como
-    un sistema de ecuaciones lineales donde cada ecuación
-    representa un sector económico.
-
-    Resolver el sistema permite calcular la producción
-    necesaria para satisfacer la demanda.
-
-    ---
-
     # 🔁 ¿Qué significa que una matriz sea invertible?
 
     Para resolver el modelo correctamente,
     la matriz (I - A) debe ser invertible.
 
-    Matemáticamente, una matriz invertible:
+    Una matriz invertible:
     - tiene solución única,
     - posee determinante diferente de cero,
     - y permite calcular su matriz inversa.
 
     Si la matriz no es invertible:
 
-    ❌ no existe una solución única  
-    ❌ el sistema económico no puede resolverse correctamente  
-    ❌ no es posible calcular la producción requerida  
-
-    Esto puede interpretarse como una inconsistencia
-    o dependencia excesiva entre sectores económicos.
+    ❌ no existe solución única  
+    ❌ el sistema no puede resolverse correctamente  
+    ❌ no puede calcularse la producción requerida  
 
     ---
 
-    # 📈 Interpretación económica
-
-    Los resultados del modelo permiten identificar
-    cuáles sectores generan mayores efectos sobre otros sectores.
-
-    Algunos sectores poseen una mayor influencia económica
-    debido a que suministran recursos o materiales importantes.
-
-    Por ejemplo:
-
-    Construcción ➜ necesita manufactura  
-    Manufactura ➜ necesita minería  
-    Transporte ➜ necesita energía  
-
-    Esto demuestra que la economía funciona como
-    un sistema interconectado.
-
-    ---
-
-    # 🌎 Aplicaciones reales del modelo
-
-    El modelo de Leontief se utiliza en:
+    # 🌎 Aplicaciones reales
 
     ✅ análisis económico nacional  
     ✅ estudios de productividad  
-    ✅ planeación económica  
     ✅ políticas públicas  
     ✅ análisis industrial  
-    ✅ estudios de impacto económico  
-
-    Instituciones como el DANE y bancos centrales
-    utilizan matrices insumo-producto para realizar análisis económicos.
+    ✅ planeación económica  
 
     ---
 
-    # ⚠️ Limitaciones del modelo
-
-    Aunque el modelo es muy útil,
-    presenta algunas limitaciones importantes:
+    # ⚠️ Limitaciones
 
     - supone relaciones lineales constantes,
-    - utiliza coeficientes técnicos fijos,
-    - simplifica el comportamiento real de la economía,
-    - y no considera cambios tecnológicos o sociales.
-
-    Aun así, sigue siendo una herramienta muy importante
-    para el análisis económico y matemático.
+    - utiliza coeficientes fijos,
+    - simplifica la economía real.
 
     </div>
     """, unsafe_allow_html=True)
@@ -385,8 +296,10 @@ elif st.session_state.pantalla == "sectores":
 
         if st.button("➡️ Continuar"):
             st.session_state.sectores = seleccionados
-            st.session_state.pantalla = "demandas"
             st.rerun()
+
+        # PASAR A DEMANDAS
+        st.session_state.pantalla = "demandas"
 
 # =========================
 # DEMANDAS
@@ -416,12 +329,32 @@ elif st.session_state.pantalla == "demandas":
 
             demandas.append(valor)
 
+    # =========================
+    # OPCIÓN ESPECIAL
+    # =========================
+    simular_no_invertible = st.checkbox(
+        "⚠️ Simular matriz no invertible"
+    )
+
+    # =========================
+    # BOTÓN CALCULAR
+    # =========================
     if st.button("📊 Calcular producción", use_container_width=True):
 
         indices = [sectores_totales.index(s) for s in sectores]
 
-        A = A_total[np.ix_(indices, indices)]
+        A = A_total[np.ix_(indices, indices)].copy()
 
+        # =========================
+        # SIMULACIÓN SINGULAR
+        # =========================
+        if simular_no_invertible:
+
+            A[1] = A[0]
+
+        # =========================
+        # MATRIZ DEL MODELO
+        # =========================
         I = np.eye(4)
 
         matriz = I - A
@@ -433,19 +366,63 @@ elif st.session_state.pantalla == "demandas":
         # =========================
         if abs(determinante) < 1e-10:
 
-            st.error("""
-            ❌ No es posible resolver el modelo de Leontief.
+            st.error(f"""
+❌ No es posible resolver el modelo de Leontief.
 
-            La matriz (I - A) no es invertible.
+La matriz (I - A) no es invertible.
 
-            Esto significa que el sistema económico no tiene una solución única.
+📌 Determinante calculado:
+{determinante:.6f}
 
-            Matemáticamente, esto ocurre porque el determinante de la matriz es igual a cero,
-            impidiendo calcular la matriz inversa.
+━━━━━━━━━━━━━━━━━━━━━━
 
-            Económicamente, esto puede representar una dependencia excesiva
-            o inconsistencia entre sectores económicos.
-            """)
+🔎 ¿Qué ocurrió?
+
+La matriz perdió independencia lineal,
+lo que significa que algunas filas o columnas
+dependen matemáticamente de otras.
+
+En este caso, el sistema económico
+ya no posee una solución única.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+📐 Explicación matemática
+
+Para resolver el modelo de Leontief
+es necesario calcular la inversa de:
+
+(I - A)
+
+Sin embargo, una matriz solo puede invertirse
+si su determinante es diferente de cero.
+
+Cuando el determinante es cero:
+
+❌ no existe matriz inversa  
+❌ el sistema se vuelve singular  
+❌ el modelo no puede resolverse correctamente  
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+📈 Interpretación económica
+
+Desde el punto de vista económico,
+esto puede representar una dependencia excesiva
+entre sectores productivos.
+
+Es decir, algunos sectores dependen tanto de otros
+que el sistema pierde estabilidad matemática
+y no es posible calcular correctamente
+la producción requerida.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+💡 En esta aplicación,
+la opción de simulación genera este caso
+con fines educativos para demostrar
+el comportamiento del modelo ante matrices no invertibles.
+""")
 
         else:
 
@@ -453,8 +430,9 @@ elif st.session_state.pantalla == "demandas":
 
             st.session_state.x = x
             st.session_state.d = demandas
-            st.session_state.pantalla = "resultados"
             st.rerun()
+
+            st.session_state.pantalla = "resultados"
 
 # =========================
 # RESULTADOS
@@ -516,18 +494,18 @@ elif st.session_state.pantalla == "resultados":
     max_sector = sectores[np.argmax(x)]
 
     st.markdown(f"""
-    ## 🧠 Interpretación económica
+## 🧠 Interpretación económica
 
-    El sector con mayor producción requerida es **{max_sector}**.
+El sector con mayor producción requerida es **{max_sector}**.
 
-    Esto indica que dicho sector genera mayores efectos indirectos
-    dentro del sistema económico y posee una fuerte relación
-    de dependencia con los demás sectores seleccionados.
+Esto indica que dicho sector genera mayores efectos indirectos
+dentro del sistema económico y posee una fuerte relación
+de dependencia con los demás sectores seleccionados.
 
-    Los resultados evidencian la existencia de encadenamientos productivos,
-    donde cambios en la demanda de un sector afectan la producción
-    requerida en otros sectores relacionados.
-    """)
+Los resultados evidencian la existencia de encadenamientos productivos,
+donde cambios en la demanda de un sector afectan la producción
+requerida en otros sectores relacionados.
+""")
 
     c1, c2, c3 = st.columns([1,2,1])
 
