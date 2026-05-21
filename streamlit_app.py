@@ -96,14 +96,14 @@ if "pantalla" not in st.session_state:
 # SECTORES
 # ==========================================
 sectores_totales = [
-    "Ganadería 🐄",
-    "Minas ⛏️",
-    "Manufactura 🏭",
-    "Construcción 🏗️",
-    "Comercio 🛒",
-    "Transporte 🚚",
-    "Energía ⚡",
-    "Servicios 💼"
+    "🐄 Ganadería",
+    "⛏️ Minas",
+    "🏭 Manufactura",
+    "🏗️ Construcción",
+    "🛒 Comercio",
+    "🚚 Transporte",
+    "⚡ Energía",
+    "💼 Servicios"
 ]
 
 # ==========================================
@@ -166,8 +166,7 @@ elif st.session_state.pantalla == "info":
 # 📘 ¿Qué es el modelo de Leontief?
 
 El modelo insumo-producto de Leontief es una herramienta matemática y económica
-desarrollada para analizar cómo los distintos sectores de una economía
-dependen entre sí.
+utilizada para analizar cómo distintos sectores de una economía dependen entre sí.
 
 Permite estudiar cómo cambios en la demanda de un sector generan efectos
 directos e indirectos sobre otros sectores productivos.
@@ -316,7 +315,7 @@ elif st.session_state.pantalla == "demandas":
             demandas.append(valor)
 
     # ==========================================
-    # OPCIÓN NO INVERTIBLE
+    # OPCIÓN MATRIZ NO INVERTIBLE
     # ==========================================
     simular_no_invertible = st.checkbox(
         "⚠️ Simular matriz no invertible"
@@ -331,15 +330,16 @@ elif st.session_state.pantalla == "demandas":
 
         A = A_total[np.ix_(indices, indices)].copy()
 
-        # ==========================================
-        # SIMULACIÓN MATRIZ NO INVERTIBLE
-        # ==========================================
-        if simular_no_invertible:
-            A[1] = A[0]
-
         I = np.eye(4)
 
         matriz = I - A
+
+        # ==========================================
+        # FORZAR MATRIZ NO INVERTIBLE
+        # ==========================================
+        if simular_no_invertible:
+
+            matriz[1] = matriz[0]
 
         determinante = np.linalg.det(matriz)
 
@@ -361,7 +361,8 @@ La matriz (I - A) no es invertible.
 🔎 ¿Qué ocurrió?
 
 La matriz perdió independencia lineal,
-lo que significa que algunas filas dependen de otras.
+lo que significa que algunas filas
+dependen matemáticamente de otras.
 
 Por esta razón,
 el sistema económico deja de tener
