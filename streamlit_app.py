@@ -97,13 +97,13 @@ if "pantalla" not in st.session_state:
 # =========================
 sectores_totales = [
     "Ganadería 🐄",
-    "Minas ⛏️",
-    "Manufactura 🏭",
-    "Construcción 🏗️",
-    "Comercio 🛒",
-    "Transporte 🚚",
-    "Energía ⚡",
-    "Servicios 💼"
+    "Minas ⛏️",
+    "Manufactura 🏭",
+    "Construcción 🏗️",
+    "Comercio 🛒",
+    "Transporte 🚚",
+    "Energía ⚡",
+    "Servicios 💼"
 ]
 
 # =========================
