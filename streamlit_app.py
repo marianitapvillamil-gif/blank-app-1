@@ -193,7 +193,7 @@ elif st.session_state.pantalla == "resultados":
     El sector con mayor producción total requerida es **{max_sector}**.
 
     Esto indica que este sector genera una mayor demanda indirecta 
-    dentro del sistema económico, siendo clave en la interdependencia entre sectores.
+    dentro del sistema económico.
     """)
 
     # =========================
