@@ -24,7 +24,7 @@ html, body, .stApp {{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60vh;
+    height: 55vh;
 }}
 
 .center-box {{
