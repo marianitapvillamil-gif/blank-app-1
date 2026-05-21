@@ -10,7 +10,7 @@ st.set_page_config(page_title="Modelo de Leontief", layout="wide")
 COLOR = "#8e44ad"
 
 # =========================
-# ESTILO FINAL LIMPIO
+# ESTILOS
 # =========================
 st.markdown(f"""
 <style>
@@ -20,32 +20,18 @@ html, body, .stApp {{
     color: white;
 }}
 
-.center-wrapper {{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 28vh;
-}}
-
-.center-box {{
-    width: 100%;
-    max-width: 450px;
-    text-align: center;
-}}
-
 .title {{
     font-size:48px;
     font-weight:800;
     color:{COLOR};
-    margin-bottom:20px;
+    text-align:center;
 }}
 
 .section {{
-    font-size:32px;
+    font-size:30px;
     font-weight:bold;
-    text-align:center;
     color:{COLOR};
-    margin-bottom:15px;
+    margin-top:20px;
 }}
 
 .card {{
@@ -54,12 +40,6 @@ html, body, .stApp {{
     border-radius:15px;
     text-align:center;
     border:1px solid #2a2f3a;
-    transition: all 0.3s ease;
-}}
-
-.card:hover {{
-    transform: translateY(-5px);
-    box-shadow:0px 10px 20px rgba(0,0,0,0.4);
 }}
 
 div.stButton > button {{
@@ -70,132 +50,188 @@ div.stButton > button {{
     font-size:17px;
 }}
 
-div.stButton > button:hover {{
-    background-color:#6d2c91;
-    transform: scale(1.03);
-}}
-
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# ESTADO
+# SECTORES
 # =========================
-if "pantalla" not in st.session_state:
-    st.session_state.pantalla = "inicio"
+sectores_totales = [
+    "Ganadería",
+    "Minas",
+    "Manufactura",
+    "Construcción",
+    "Comercio",
+    "Transporte",
+    "Energía",
+    "Servicios"
+]
 
 # =========================
-# MATRIZ
+# MATRIZ GENERAL 8x8
 # =========================
-A = np.array([
-    [0.15, 0.05, 0.10, 0.02],
-    [0.04, 0.12, 0.18, 0.06],
-    [0.20, 0.15, 0.25, 0.10],
-    [0.03, 0.08, 0.20, 0.18]
+A_total = np.array([
+    [0.15,0.05,0.10,0.02,0.04,0.03,0.02,0.01],
+    [0.04,0.12,0.18,0.06,0.05,0.04,0.03,0.02],
+    [0.20,0.15,0.25,0.10,0.08,0.07,0.06,0.04],
+    [0.03,0.08,0.20,0.18,0.06,0.05,0.04,0.03],
+    [0.05,0.04,0.07,0.06,0.10,0.08,0.05,0.04],
+    [0.02,0.03,0.05,0.04,0.07,0.12,0.06,0.05],
+    [0.03,0.02,0.04,0.03,0.05,0.06,0.15,0.07],
+    [0.01,0.02,0.03,0.02,0.04,0.05,0.06,0.10]
 ])
 
 # =========================
-# INICIO
+# TÍTULO
 # =========================
-if st.session_state.pantalla == "inicio":
-
-    st.markdown('<div class="center-wrapper"><div class="center-box">', unsafe_allow_html=True)
-
-    st.markdown('<div class="title">📊 Modelo de Leontief</div>', unsafe_allow_html=True)
-
-    if st.button("🚀 Iniciar análisis", use_container_width=True):
-        st.session_state.pantalla = "formulario"
-        st.rerun()
-
-    st.markdown('</div></div>', unsafe_allow_html=True)
+st.markdown('<div class="title">📊 Modelo de Leontief</div>', unsafe_allow_html=True)
 
 # =========================
-# FORMULARIO
+# INFORMACIÓN
 # =========================
-elif st.session_state.pantalla == "formulario":
+with st.expander("ℹ️ Información sobre el modelo"):
 
-    st.markdown('<div class="section">📥 Ingresar demandas</div>', unsafe_allow_html=True)
+    st.markdown("""
+    ## ¿Qué es el modelo de Leontief?
 
-    col1, col2 = st.columns(2)
+    El modelo insumo-producto de Leontief analiza cómo los sectores económicos dependen unos de otros.
 
-    with col1:
-        ganaderia = st.number_input("🐄 Ganadería", value=100.0)
-        minas = st.number_input("⛏️ Minas", value=80.0)
+    ## Fórmula principal
 
-    with col2:
-        manufactura = st.number_input("🏭 Manufactura", value=150.0)
-        construccion = st.number_input("🏗️ Construcción", value=120.0)
+    x = (I - A)^(-1)d
 
-    c1, c2, c3 = st.columns([2,3,2])
-    with c2:
-        if st.button("📊 Calcular producción", use_container_width=True):
+    ## Conceptos utilizados
 
-            d = np.array([ganaderia, minas, manufactura, construccion])
-            I = np.eye(4)
+    ### Matriz A
+    Representa los coeficientes técnicos entre sectores económicos.
 
-            try:
-                x = np.linalg.solve(I - A, d)
+    ### Matriz identidad I
+    Matriz utilizada para construir el sistema económico.
 
-                st.session_state.x = x
-                st.session_state.d = d
-                st.session_state.pantalla = "resultados"
-                st.rerun()
+    ### Vector d
+    Representa la demanda final.
 
-            except Exception as e:
-                st.error(f"Error en cálculo: {e}")
+    ### Vector x
+    Producción total requerida.
 
-# =========================
-# RESULTADOS
-# =========================
-elif st.session_state.pantalla == "resultados":
+    ### Matriz inversa
+    Permite resolver sistemas de ecuaciones lineales.
 
-    x = st.session_state.x
-    d = st.session_state.d
-
-    sectores = ["Ganadería", "Minas", "Manufactura", "Construcción"]
-
-    st.markdown('<div class="section">📊 Resultados</div>', unsafe_allow_html=True)
-
-    # TARJETAS ✅
-    cols = st.columns(4)
-
-    for i in range(4):
-        with cols[i]:
-            st.markdown(f"""
-            <div class="card">
-                <h4>{sectores[i]}</h4>
-                <h2>{x[i]:.2f}</h2>
-            </div>
-            """, unsafe_allow_html=True)
-
-    # GRÁFICA ✅
-    fig = go.Figure()
-
-    fig.add_bar(x=sectores, y=d, name="Demanda", marker_color="#3498db")
-    fig.add_bar(x=sectores, y=x, name="Producción", marker_color=COLOR)
-
-    fig.update_layout(
-        template="plotly_dark",
-        title="Comparación: Demanda vs Producción",
-        barmode="group"
-    )
-
-    st.plotly_chart(fig, use_container_width=True)
-
-    # INTERPRETACIÓN ✅
-    max_sector = sectores[np.argmax(x)]
-
-    st.markdown(f"""
-    ### 🧠 Interpretación
-    El sector con mayor producción total requerida es **{max_sector}**.
-
-    Esto indica que este sector genera una mayor demanda indirecta 
-    dentro del sistema económico, siendo clave en la interdependencia entre sectores.
+    ### Encadenamientos productivos
+    Relaciones de dependencia entre sectores económicos.
     """)
 
-    # BOTÓN VOLVER ✅
-    c1, c2, c3 = st.columns([2,3,2])
-    with c2:
-        if st.button("🔄 Nuevo análisis", use_container_width=True):
-            st.session_state.pantalla = "inicio"
-            st.rerun()
+# =========================
+# SELECCIÓN DE SECTORES
+# =========================
+st.markdown('<div class="section">Seleccionar sectores</div>', unsafe_allow_html=True)
+
+seleccionados = st.multiselect(
+    "Escoge 4 sectores:",
+    sectores_totales,
+    max_selections=4
+)
+
+if len(seleccionados) == 4:
+
+    indices = [sectores_totales.index(s) for s in seleccionados]
+
+    A = A_total[np.ix_(indices, indices)]
+
+    st.markdown('<div class="section">Ingresar demandas</div>', unsafe_allow_html=True)
+
+    demandas = []
+
+    cols = st.columns(2)
+
+    for i, sector in enumerate(seleccionados):
+
+        with cols[i % 2]:
+            valor = st.number_input(
+                f"Demanda para {sector}",
+                min_value=0.0,
+                value=100.0
+            )
+            demandas.append(valor)
+
+    if st.button("📊 Calcular producción"):
+
+        d = np.array(demandas)
+
+        I = np.eye(4)
+
+        matriz = I - A
+
+        determinante = np.linalg.det(matriz)
+
+        # =========================
+        # VALIDAR INVERTIBILIDAD
+        # =========================
+        if abs(determinante) < 1e-10:
+
+            st.error("""
+            ❌ No es posible resolver el modelo de Leontief.
+
+            La matriz (I - A) no es invertible.
+
+            Esto significa que el sistema económico no posee una solución única.
+
+            Matemáticamente, una matriz no invertible tiene determinante igual a cero, lo cual impide calcular su inversa.
+
+            En términos económicos, esto puede interpretarse como una dependencia excesiva o inconsistencia entre sectores económicos.
+            """)
+
+        else:
+
+            x = np.linalg.solve(matriz, d)
+
+            st.markdown('<div class="section">Resultados</div>', unsafe_allow_html=True)
+
+            cols = st.columns(4)
+
+            for i in range(4):
+                with cols[i]:
+                    st.markdown(f"""
+                    <div class="card">
+                        <h4>{seleccionados[i]}</h4>
+                        <h2>{x[i]:.2f}</h2>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            # =========================
+            # GRÁFICA
+            # =========================
+            fig = go.Figure()
+
+            fig.add_bar(
+                x=seleccionados,
+                y=d,
+                name="Demanda"
+            )
+
+            fig.add_bar(
+                x=seleccionados,
+                y=x,
+                name="Producción"
+            )
+
+            fig.update_layout(
+                template="plotly_dark",
+                title="Demanda vs Producción",
+                barmode="group"
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
+            # =========================
+            # INTERPRETACIÓN
+            # =========================
+            max_sector = seleccionados[np.argmax(x)]
+
+            st.markdown(f"""
+            ## 🧠 Interpretación
+
+            El sector con mayor producción requerida es **{max_sector}**.
+
+            Esto indica que dicho sector genera mayores efectos indirectos dentro del sistema económico y posee una fuerte relación de dependencia con los demás sectores seleccionados.
+            """)
