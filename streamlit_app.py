@@ -10,7 +10,7 @@ st.set_page_config(page_title="Modelo de Leontief", layout="wide")
 COLOR = "#8e44ad"
 
 # =========================
-# ESTILO + CENTRADO + ANIMACIONES
+# ESTILO + CENTRADO
 # =========================
 st.markdown(f"""
 <style>
@@ -25,16 +25,14 @@ html, body, .stApp {{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 85vh;
+    height: 90vh;
 }}
 
 .title {{
-    font-size:75px;
+    font-size:70px;
     font-weight:900;
     text-align:center;
     color:{COLOR};
-    margin-bottom:20px;
-    animation: fadeIn 1.2s ease-in;
 }}
 
 .section {{
@@ -43,7 +41,6 @@ html, body, .stApp {{
     text-align:center;
     color:{COLOR};
     margin-bottom:25px;
-    animation: fadeIn 1s ease-in;
 }}
 
 .card {{
@@ -52,7 +49,6 @@ html, body, .stApp {{
     border-radius:15px;
     text-align:center;
     border:1px solid #2a2f3a;
-    transition: transform 0.3s;
 }}
 
 .card:hover {{
@@ -65,17 +61,11 @@ div.stButton > button {{
     border-radius:12px;
     height:55px;
     font-size:18px;
-    transition: all 0.3s ease;
-}}
-
-div.stButton > button:hover {{
-    background-color:#6d2c91;
-    transform: scale(1.05);
 }}
 
 @keyframes fadeIn {{
-    from {{ opacity: 0; transform: translateY(25px); }}
-    to {{ opacity: 1; transform: translateY(0); }}
+    from {{ opacity: 0; }}
+    to {{ opacity: 1; }}
 }}
 </style>
 """, unsafe_allow_html=True)
@@ -97,13 +87,11 @@ A = np.array([
 ])
 
 # =========================
-# PANTALLA INICIO (CENTRADA)
+# PANTALLA INICIO
 # =========================
 if st.session_state.pantalla == "inicio":
 
-    st.markdown("""
-    <div class="center-screen">
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="center-screen">', unsafe_allow_html=True)
 
     st.markdown('<p class="title">📊 Modelo de Leontief</p>', unsafe_allow_html=True)
 
@@ -111,7 +99,7 @@ if st.session_state.pantalla == "inicio":
         st.session_state.pantalla = "formulario"
         st.rerun()
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================
 # FORMULARIO
@@ -164,7 +152,7 @@ elif st.session_state.pantalla == "resultados":
     st.markdown('<p class="section">📊 Resultados</p>', unsafe_allow_html=True)
 
     # =========================
-    # TARJETAS
+    # TARJETAS (CORREGIDAS ✅)
     # =========================
     cols = st.columns(4)
 
@@ -173,14 +161,14 @@ elif st.session_state.pantalla == "resultados":
             st.markdown(f"""
             <div class="card">
                 <h4>{sectores[i]}</h4>
-                <h2>{x[i]:.
+                <h2>{x[i]:.2f}</h2>
             </div>
             """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     # =========================
-    # GRÁFICA COMPARATIVA
+    # GRÁFICA
     # =========================
     fig = go.Figure()
 
@@ -196,7 +184,7 @@ elif st.session_state.pantalla == "resultados":
     st.plotly_chart(fig, use_container_width=True)
 
     # =========================
-    # INTERPRETACIÓN (ACTUALIZADA ✅)
+    # INTERPRETACIÓN (TU TEXTO ✅)
     # =========================
     max_sector = sectores[np.argmax(x)]
 
@@ -218,3 +206,4 @@ elif st.session_state.pantalla == "resultados":
         if st.button("🔄 Nuevo análisis", use_container_width=True):
             st.session_state.pantalla = "inicio"
             st.rerun()
+``
