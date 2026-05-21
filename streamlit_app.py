@@ -206,4 +206,3 @@ elif st.session_state.pantalla == "resultados":
         if st.button("🔄 Nuevo análisis", use_container_width=True):
             st.session_state.pantalla = "inicio"
             st.rerun()
-``
