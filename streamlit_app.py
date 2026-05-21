@@ -300,14 +300,14 @@ elif st.session_state.pantalla == "sectores":
 
     if len(seleccionados) == 4:
 
-        st.success("✅ Sectores seleccionados correctamente")
+    st.success("✅ Sectores seleccionados correctamente")
 
-        if st.button("➡️ Continuar"):
-            st.session_state.sectores = seleccionados
-            st.rerun()
+    if st.button("➡️ Continuar"):
 
-        # PASAR A DEMANDAS
+        st.session_state.sectores = seleccionados
         st.session_state.pantalla = "demandas"
+
+        st.rerun()
 
 # =========================
 # DEMANDAS
