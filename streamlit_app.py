@@ -10,38 +10,40 @@ st.set_page_config(page_title="Modelo de Leontief", layout="wide")
 COLOR = "#8e44ad"
 
 # =========================
-# ESTILO + CENTRADO PERFECTO
+# ESTILO PREMIUM
 # =========================
 st.markdown(f"""
 <style>
+
 html, body, .stApp {{
     background-color: #0e1117;
     color: white;
 }}
 
-.center-screen {{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-
+.container {{
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 80vh;
+}}
+
+.box {{
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    animation: fadeIn 1s ease;
 }}
 
 .title {{
-    font-size:70px;
+    font-size:65px;
     font-weight:900;
-    text-align:center;
     color:{COLOR};
-    margin-bottom:40px;
+    margin-bottom:30px;
+    animation: fadeUp 1s ease;
 }}
 
 .section {{
-    font-size:40px;
+    font-size:38px;
     font-weight:bold;
     text-align:center;
     color:{COLOR};
@@ -54,11 +56,12 @@ html, body, .stApp {{
     border-radius:15px;
     text-align:center;
     border:1px solid #2a2f3a;
-    transition: transform 0.3s;
+    transition: all 0.3s ease;
 }}
 
 .card:hover {{
-    transform: scale(1.05);
+    transform: translateY(-8px);
+    box-shadow:0px 10px 25px rgba(0,0,0,0.5);
 }}
 
 div.stButton > button {{
@@ -67,13 +70,24 @@ div.stButton > button {{
     border-radius:12px;
     height:55px;
     font-size:18px;
-    width:100%;
+    transition: all 0.3s ease;
 }}
 
 div.stButton > button:hover {{
     background-color:#6d2c91;
     transform: scale(1.05);
 }}
+
+@keyframes fadeUp {{
+    from {{ opacity:0; transform:translateY(30px); }}
+    to {{ opacity:1; transform:translateY(0); }}
+}}
+
+@keyframes fadeIn {{
+    from {{ opacity:0; }}
+    to {{ opacity:1; }}
+}}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -84,7 +98,7 @@ if "pantalla" not in st.session_state:
     st.session_state.pantalla = "inicio"
 
 # =========================
-# MATRIZ A
+# MATRIZ
 # =========================
 A = np.array([
     [0.15, 0.05, 0.10, 0.02],
@@ -94,26 +108,26 @@ A = np.array([
 ])
 
 # =========================
-# PANTALLA INICIO (CENTRO REAL)
+# INICIO
 # =========================
 if st.session_state.pantalla == "inicio":
 
-    st.markdown('<div class="center-screen">', unsafe_allow_html=True)
+    st.markdown('<div class="container"><div class="box">', unsafe_allow_html=True)
 
-    st.markdown('<p class="title">📊 Modelo de Leontief</p>', unsafe_allow_html=True)
+    st.markdown('<div class="title">📊 Modelo de Leontief</div>', unsafe_allow_html=True)
 
-    if st.button("🚀 Iniciar análisis"):
+    if st.button("🚀 Iniciar análisis", use_container_width=True):
         st.session_state.pantalla = "formulario"
         st.rerun()
 
-    st.markdown('</div>', unsafe_allow_html=True)
+    st.markdown('</div></div>', unsafe_allow_html=True)
 
 # =========================
 # FORMULARIO
 # =========================
 elif st.session_state.pantalla == "formulario":
 
-    st.markdown('<p class="section">📥 Ingresar demandas</p>', unsafe_allow_html=True)
+    st.markdown('<div class="section">📥 Ingresar demandas</div>', unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
 
@@ -140,11 +154,10 @@ elif st.session_state.pantalla == "formulario":
                 st.session_state.x = x
                 st.session_state.d = d
                 st.session_state.pantalla = "resultados"
-
                 st.rerun()
 
             except Exception as e:
-                st.error(f"❌ Error en cálculo: {e}")
+                st.error(f"Error: {e}")
 
 # =========================
 # RESULTADOS
@@ -156,9 +169,9 @@ elif st.session_state.pantalla == "resultados":
 
     sectores = ["Ganadería", "Minas", "Manufactura", "Construcción"]
 
-    st.markdown('<p class="section">📊 Resultados</p>', unsafe_allow_html=True)
+    st.markdown('<div class="section">📊 Resultados</div>', unsafe_allow_html=True)
 
-    # TARJETAS ✅
+    # TARJETAS
     cols = st.columns(4)
 
     for i in range(4):
@@ -170,9 +183,9 @@ elif st.session_state.pantalla == "resultados":
             </div>
             """, unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>")
 
-    # GRÁFICA ✅
+    # GRÁFICA
     fig = go.Figure()
 
     fig.add_bar(x=sectores, y=d, name="Demanda", marker_color="#3498db")
@@ -186,7 +199,7 @@ elif st.session_state.pantalla == "resultados":
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # INTERPRETACIÓN ✅
+    # INTERPRETACIÓN
     max_sector = sectores[np.argmax(x)]
 
     st.markdown(f"""
@@ -197,8 +210,7 @@ elif st.session_state.pantalla == "resultados":
     dentro del sistema económico, siendo clave en la interdependencia entre sectores.
     """)
 
-    # BOTÓN VOLVER ✅
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>")
 
     c1, c2, c3 = st.columns([2,3,2])
     with c2:
