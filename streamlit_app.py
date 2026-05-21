@@ -10,7 +10,7 @@ st.set_page_config(page_title="Modelo de Leontief", layout="wide")
 COLOR = "#8e44ad"
 
 # =========================
-# ESTILO FINAL CORRECTO
+# ESTILO FINAL LIMPIO
 # =========================
 st.markdown(f"""
 <style>
@@ -24,7 +24,7 @@ html, body, .stApp {{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 75vh;
+    height: 65vh;
 }}
 
 .center-box {{
@@ -34,18 +34,18 @@ html, body, .stApp {{
 }}
 
 .title {{
-    font-size:50px;
+    font-size:48px;
     font-weight:800;
     color:{COLOR};
-    margin-bottom:25px;
+    margin-bottom:20px;
 }}
 
 .section {{
-    font-size:34px;
+    font-size:32px;
     font-weight:bold;
     text-align:center;
     color:{COLOR};
-    margin-bottom:20px;
+    margin-bottom:15px;
 }}
 
 .card {{
@@ -95,7 +95,7 @@ A = np.array([
 ])
 
 # =========================
-# INICIO (CENTRADO REAL)
+# INICIO
 # =========================
 if st.session_state.pantalla == "inicio":
 
@@ -126,8 +126,6 @@ elif st.session_state.pantalla == "formulario":
         manufactura = st.number_input("🏭 Manufactura", value=150.0)
         construccion = st.number_input("🏗️ Construcción", value=120.0)
 
-    st.markdown("<br>")
-
     c1, c2, c3 = st.columns([2,3,2])
     with c2:
         if st.button("📊 Calcular producción", use_container_width=True):
@@ -144,7 +142,7 @@ elif st.session_state.pantalla == "formulario":
                 st.rerun()
 
             except Exception as e:
-                st.error(f"Error: {e}")
+                st.error(f"Error en cálculo: {e}")
 
 # =========================
 # RESULTADOS
@@ -169,8 +167,6 @@ elif st.session_state.pantalla == "resultados":
                 <h2>{x[i]:.2f}</h2>
             </div>
             """, unsafe_allow_html=True)
-
-    st.markdown("<br>")
 
     # GRÁFICA ✅
     fig = go.Figure()
@@ -197,8 +193,7 @@ elif st.session_state.pantalla == "resultados":
     dentro del sistema económico, siendo clave en la interdependencia entre sectores.
     """)
 
-    st.markdown("<br>")
-
+    # BOTÓN VOLVER ✅
     c1, c2, c3 = st.columns([2,3,2])
     with c2:
         if st.button("🔄 Nuevo análisis", use_container_width=True):
