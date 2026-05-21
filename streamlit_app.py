@@ -2,9 +2,9 @@ import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 
-# =========================
+# ==========================================
 # CONFIGURACIÓN
-# =========================
+# ==========================================
 st.set_page_config(
     page_title="Modelo de Leontief",
     layout="wide"
@@ -12,9 +12,9 @@ st.set_page_config(
 
 COLOR = "#8e44ad"
 
-# =========================
+# ==========================================
 # ESTILOS
-# =========================
+# ==========================================
 st.markdown(f"""
 <style>
 
@@ -32,7 +32,7 @@ html, body, .stApp {{
 }}
 
 .subtitle {{
-    font-size:24px;
+    font-size:22px;
     text-align:center;
     color:#cccccc;
     margin-bottom:40px;
@@ -86,15 +86,15 @@ div.stButton > button:hover {{
 </style>
 """, unsafe_allow_html=True)
 
-# =========================
+# ==========================================
 # ESTADO
-# =========================
+# ==========================================
 if "pantalla" not in st.session_state:
     st.session_state.pantalla = "inicio"
 
-# =========================
+# ==========================================
 # SECTORES
-# =========================
+# ==========================================
 sectores_totales = [
     "Ganadería 🐄",
     "Minas ⛏️",
@@ -106,10 +106,9 @@ sectores_totales = [
     "Servicios 💼"
 ]
 
-# =========================
+# ==========================================
 # MATRIZ GENERAL
-# (basada en datos simplificados del DANE)
-# =========================
+# ==========================================
 A_total = np.array([
     [0.15,0.05,0.10,0.02,0.04,0.03,0.02,0.01],
     [0.04,0.12,0.18,0.06,0.05,0.04,0.03,0.02],
@@ -121,9 +120,9 @@ A_total = np.array([
     [0.01,0.02,0.03,0.02,0.04,0.05,0.06,0.10]
 ])
 
-# =========================
+# ==========================================
 # PANTALLA INICIO
-# =========================
+# ==========================================
 if st.session_state.pantalla == "inicio":
 
     st.markdown(
@@ -151,9 +150,9 @@ if st.session_state.pantalla == "inicio":
             st.session_state.pantalla = "info"
             st.rerun()
 
-# =========================
+# ==========================================
 # INFORMACIÓN
-# =========================
+# ==========================================
 elif st.session_state.pantalla == "info":
 
     st.markdown(
@@ -164,116 +163,95 @@ elif st.session_state.pantalla == "info":
     st.markdown("""
     <div class="info-box">
 
-    # 📘 ¿Qué es el modelo de Leontief?
+# 📘 ¿Qué es el modelo de Leontief?
 
-    El modelo insumo-producto de Leontief es una herramienta matemática y económica
-    desarrollada por el economista Wassily Leontief para estudiar cómo los distintos
-    sectores de una economía dependen unos de otros.
+El modelo insumo-producto de Leontief es una herramienta matemática y económica
+desarrollada para analizar cómo los distintos sectores de una economía
+dependen entre sí.
 
-    Este modelo permite analizar cómo un cambio en la demanda de un sector económico
-    afecta indirectamente la producción de otros sectores relacionados.
+Permite estudiar cómo cambios en la demanda de un sector generan efectos
+directos e indirectos sobre otros sectores productivos.
 
-    ---
+---
 
-    # 🏭 ¿Qué analiza este modelo?
+# 🏭 Encadenamientos productivos
 
-    El modelo estudia las relaciones de producción entre sectores económicos.
+Los sectores económicos no funcionan de manera aislada.
 
-    Por ejemplo:
+Por ejemplo:
+- la construcción necesita manufactura,
+- la manufactura necesita minería,
+- el transporte necesita energía.
 
-    - la construcción necesita manufactura,
-    - la manufactura necesita minería,
-    - el transporte necesita energía,
-    - y todos los sectores pueden depender entre sí.
+Esto significa que un cambio en un sector afecta a otros sectores relacionados.
 
-    Debido a esto, un aumento en la demanda de un sector genera cambios
-    en muchos otros sectores relacionados.
+A estas relaciones se les llama:
 
-    Estas relaciones son conocidas como:
+✅ Encadenamientos productivos.
 
-    ✅ Encadenamientos productivos.
+---
 
-    ---
+# 📊 Matriz insumo-producto
 
-    # 📊 ¿Qué son las matrices insumo-producto?
+La matriz insumo-producto representa matemáticamente
+las relaciones económicas entre sectores.
 
-    Las matrices insumo-producto representan matemáticamente
-    las relaciones económicas entre sectores productivos.
+Cada valor indica cuánto necesita un sector
+de otro sector para producir una unidad adicional.
 
-    Cada valor de la matriz indica cuánto necesita un sector
-    de otro sector para producir una unidad de producción.
+---
 
-    ---
+# 🧮 Fórmula principal
 
-    # 🧮 Fórmula principal del modelo
+x = (I - A)^(-1)d
 
-    x = (I - A)^(-1)d
+---
 
-    Esta fórmula permite calcular la producción total requerida
-    para satisfacer una determinada demanda económica.
+# 📌 Significado de cada elemento
 
-    ---
+✅ A → matriz de coeficientes técnicos  
+✅ I → matriz identidad  
+✅ d → vector de demanda  
+✅ x → producción total requerida  
 
-    # 📌 Explicación de cada elemento
+---
 
-    ## 🔹 Matriz A
-    Representa los coeficientes técnicos entre sectores económicos.
+# 📐 Conceptos matemáticos utilizados
 
-    ## 🔹 Matriz identidad I
-    Se utiliza para construir la matriz (I - A).
+✅ Matrices cuadradas  
+✅ Sistemas de ecuaciones lineales  
+✅ Matriz identidad  
+✅ Matriz inversa  
+✅ Determinantes  
+✅ Álgebra lineal computacional  
 
-    ## 🔹 Vector d
-    Representa la demanda final de los sectores económicos.
+---
 
-    ## 🔹 Vector x
-    Representa la producción total requerida.
+# 🔁 ¿Qué significa que una matriz sea invertible?
 
-    ---
+Para resolver el modelo,
+la matriz (I - A) debe ser invertible.
 
-    # 📐 Conceptos matemáticos utilizados
+Si no es invertible:
+❌ no existe solución única  
+❌ el modelo no puede resolverse correctamente  
 
-    ✅ Matrices cuadradas  
-    ✅ Sistemas de ecuaciones lineales  
-    ✅ Matriz identidad  
-    ✅ Matriz inversa  
-    ✅ Determinantes  
-    ✅ Álgebra lineal computacional  
+---
 
-    ---
+# 🌎 Aplicaciones reales
 
-    # 🔁 ¿Qué significa que una matriz sea invertible?
+✅ análisis económico  
+✅ políticas públicas  
+✅ estudios industriales  
+✅ planeación económica  
 
-    Para resolver el modelo correctamente,
-    la matriz (I - A) debe ser invertible.
+---
 
-    Una matriz invertible:
-    - tiene solución única,
-    - posee determinante diferente de cero,
-    - y permite calcular su matriz inversa.
+# ⚠️ Limitaciones
 
-    Si la matriz no es invertible:
-
-    ❌ no existe solución única  
-    ❌ el sistema no puede resolverse correctamente  
-    ❌ no puede calcularse la producción requerida  
-
-    ---
-
-    # 🌎 Aplicaciones reales
-
-    ✅ análisis económico nacional  
-    ✅ estudios de productividad  
-    ✅ políticas públicas  
-    ✅ análisis industrial  
-    ✅ planeación económica  
-
-    ---
-
-    # ⚠️ Limitaciones
-
-    - supone relaciones lineales constantes,
-    - utiliza coeficientes fijos,
-    - simplifica la economía real.
+- supone relaciones lineales constantes,
+- utiliza coeficientes fijos,
+- simplifica la economía real.
 
     </div>
     """, unsafe_allow_html=True)
@@ -282,9 +260,9 @@ elif st.session_state.pantalla == "info":
         st.session_state.pantalla = "inicio"
         st.rerun()
 
-# =========================
+# ==========================================
 # SELECCIÓN DE SECTORES
-# =========================
+# ==========================================
 elif st.session_state.pantalla == "sectores":
 
     st.markdown(
@@ -300,18 +278,18 @@ elif st.session_state.pantalla == "sectores":
 
     if len(seleccionados) == 4:
 
-    st.success("✅ Sectores seleccionados correctamente")
+        st.success("✅ Sectores seleccionados correctamente")
 
-    if st.button("➡️ Continuar"):
+        if st.button("➡️ Continuar"):
 
-        st.session_state.sectores = seleccionados
-        st.session_state.pantalla = "demandas"
+            st.session_state.sectores = seleccionados
+            st.session_state.pantalla = "demandas"
 
-        st.rerun()
+            st.rerun()
 
-# =========================
+# ==========================================
 # DEMANDAS
-# =========================
+# ==========================================
 elif st.session_state.pantalla == "demandas":
 
     sectores = st.session_state.sectores
@@ -337,41 +315,37 @@ elif st.session_state.pantalla == "demandas":
 
             demandas.append(valor)
 
-    # =========================
-    # OPCIÓN ESPECIAL
-    # =========================
+    # ==========================================
+    # OPCIÓN NO INVERTIBLE
+    # ==========================================
     simular_no_invertible = st.checkbox(
         "⚠️ Simular matriz no invertible"
     )
 
-    # =========================
+    # ==========================================
     # BOTÓN CALCULAR
-    # =========================
+    # ==========================================
     if st.button("📊 Calcular producción", use_container_width=True):
 
         indices = [sectores_totales.index(s) for s in sectores]
 
         A = A_total[np.ix_(indices, indices)].copy()
 
-        # =========================
-        # SIMULACIÓN SINGULAR
-        # =========================
+        # ==========================================
+        # SIMULACIÓN MATRIZ NO INVERTIBLE
+        # ==========================================
         if simular_no_invertible:
-
             A[1] = A[0]
 
-        # =========================
-        # MATRIZ DEL MODELO
-        # =========================
         I = np.eye(4)
 
         matriz = I - A
 
         determinante = np.linalg.det(matriz)
 
-        # =========================
+        # ==========================================
         # VALIDACIÓN
-        # =========================
+        # ==========================================
         if abs(determinante) < 1e-10:
 
             st.error(f"""
@@ -387,49 +361,45 @@ La matriz (I - A) no es invertible.
 🔎 ¿Qué ocurrió?
 
 La matriz perdió independencia lineal,
-lo que significa que algunas filas o columnas
-dependen matemáticamente de otras.
+lo que significa que algunas filas dependen de otras.
 
-En este caso, el sistema económico
-ya no posee una solución única.
+Por esta razón,
+el sistema económico deja de tener
+una solución única.
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
 📐 Explicación matemática
 
-Para resolver el modelo de Leontief
-es necesario calcular la inversa de:
+El modelo de Leontief necesita calcular:
 
-(I - A)
+(I - A)^(-1)
 
-Sin embargo, una matriz solo puede invertirse
+Pero una matriz solo puede invertirse
 si su determinante es diferente de cero.
 
 Cuando el determinante es cero:
 
 ❌ no existe matriz inversa  
 ❌ el sistema se vuelve singular  
-❌ el modelo no puede resolverse correctamente  
+❌ no puede resolverse correctamente  
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
 📈 Interpretación económica
 
-Desde el punto de vista económico,
-esto puede representar una dependencia excesiva
-entre sectores productivos.
+Esto puede representar una dependencia excesiva
+entre sectores económicos.
 
-Es decir, algunos sectores dependen tanto de otros
-que el sistema pierde estabilidad matemática
-y no es posible calcular correctamente
-la producción requerida.
+Es decir,
+algunos sectores dependen tanto de otros
+que el sistema pierde estabilidad matemática.
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
-💡 En esta aplicación,
-la opción de simulación genera este caso
+💡 Esta simulación fue agregada
 con fines educativos para demostrar
-el comportamiento del modelo ante matrices no invertibles.
+qué ocurre cuando una matriz no es invertible.
 """)
 
         else:
@@ -438,18 +408,20 @@ el comportamiento del modelo ante matrices no invertibles.
 
             st.session_state.x = x
             st.session_state.d = demandas
-            st.rerun()
+            st.session_state.sectores_resultado = sectores
 
             st.session_state.pantalla = "resultados"
 
-# =========================
+            st.rerun()
+
+# ==========================================
 # RESULTADOS
-# =========================
+# ==========================================
 elif st.session_state.pantalla == "resultados":
 
     x = st.session_state.x
     d = st.session_state.d
-    sectores = st.session_state.sectores
+    sectores = st.session_state.sectores_resultado
 
     st.markdown(
         '<div class="section">📈 Resultados</div>',
@@ -469,9 +441,9 @@ elif st.session_state.pantalla == "resultados":
             </div>
             """, unsafe_allow_html=True)
 
-    # =========================
+    # ==========================================
     # GRÁFICA
-    # =========================
+    # ==========================================
     fig = go.Figure()
 
     fig.add_bar(
@@ -496,23 +468,25 @@ elif st.session_state.pantalla == "resultados":
 
     st.plotly_chart(fig, use_container_width=True)
 
-    # =========================
+    # ==========================================
     # INTERPRETACIÓN
-    # =========================
+    # ==========================================
     max_sector = sectores[np.argmax(x)]
 
     st.markdown(f"""
 ## 🧠 Interpretación económica
 
-El sector con mayor producción requerida es **{max_sector}**.
+El sector con mayor producción requerida es:
+
+### {max_sector}
 
 Esto indica que dicho sector genera mayores efectos indirectos
-dentro del sistema económico y posee una fuerte relación
-de dependencia con los demás sectores seleccionados.
+sobre los demás sectores del sistema económico.
 
-Los resultados evidencian la existencia de encadenamientos productivos,
-donde cambios en la demanda de un sector afectan la producción
-requerida en otros sectores relacionados.
+Los resultados muestran la existencia
+de encadenamientos productivos,
+donde cambios en la demanda de un sector
+afectan la producción requerida en otros sectores relacionados.
 """)
 
     c1, c2, c3 = st.columns([1,2,1])
