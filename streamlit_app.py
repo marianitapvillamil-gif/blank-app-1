@@ -3,7 +3,7 @@ import numpy as np
 import plotly.graph_objects as go
 
 # =========================
-# CONFIG
+# CONFIGURACIÓN
 # =========================
 st.set_page_config(
     page_title="Modelo de Leontief",
@@ -13,7 +13,7 @@ st.set_page_config(
 COLOR = "#8e44ad"
 
 # =========================
-# ESTILO
+# ESTILOS
 # =========================
 st.markdown(f"""
 <style>
@@ -66,6 +66,7 @@ html, body, .stApp {{
     padding:25px;
     border-radius:15px;
     border:1px solid #2a2f3a;
+    line-height:1.8;
 }}
 
 div.stButton > button {{
@@ -74,6 +75,7 @@ div.stButton > button {{
     border-radius:12px;
     height:50px;
     font-size:17px;
+    border:none;
 }}
 
 div.stButton > button:hover {{
@@ -94,18 +96,18 @@ if "pantalla" not in st.session_state:
 # SECTORES
 # =========================
 sectores_totales = [
-    "🐄 Ganadería",
-    "⛏️ Minas",
-    "🏭 Manufactura",
-    "🏗️ Construcción",
-    "🛒 Comercio",
-    "🚚 Transporte",
-    "⚡ Energía",
-    "💼 Servicios"
+    "Ganadería 🐄",
+    "Minas ⛏️",
+    "Manufactura 🏭",
+    "Construcción 🏗️",
+    "Comercio 🛒",
+    "Transporte 🚚",
+    "Energía ⚡",
+    "Servicios 💼"
 ]
 
 # =========================
-# MATRIZ GENERAL
+# MATRIZ GENERAL 8x8
 # =========================
 A_total = np.array([
     [0.15,0.05,0.10,0.02,0.04,0.03,0.02,0.01],
@@ -123,7 +125,10 @@ A_total = np.array([
 # =========================
 if st.session_state.pantalla == "inicio":
 
-    st.markdown('<div class="title">📊 Modelo de Leontief</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="title">📊 Modelo de Leontief</div>',
+        unsafe_allow_html=True
+    )
 
     st.markdown("""
     <div class="subtitle">
@@ -150,85 +155,206 @@ if st.session_state.pantalla == "inicio":
 # =========================
 elif st.session_state.pantalla == "info":
 
-    st.markdown('<div class="section">ℹ️ Información del modelo</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="section">ℹ️ Información del modelo</div>',
+        unsafe_allow_html=True
+    )
 
     st.markdown("""
     <div class="info-box">
 
-    ## 📘 ¿Qué es el modelo de Leontief?
+    # 📘 ¿Qué es el modelo de Leontief?
 
     El modelo insumo-producto de Leontief es una herramienta matemática y económica
-    utilizada para analizar cómo distintos sectores económicos dependen unos de otros.
+    desarrollada por el economista Wassily Leontief para estudiar cómo los distintos
+    sectores de una economía dependen unos de otros.
 
-    Permite estudiar cómo cambios en la demanda de un sector afectan la producción
-    total requerida de otros sectores relacionados.
+    Este modelo permite analizar cómo un cambio en la demanda de un sector económico
+    afecta indirectamente la producción de otros sectores relacionados.
+
+    Por este aporte, Wassily Leontief recibió el Premio Nobel de Economía en 1973.
 
     ---
 
-    ## 🧮 Fórmula principal
+    # 🏭 ¿Qué analiza este modelo?
+
+    El modelo estudia las relaciones de producción entre sectores económicos.
+
+    Por ejemplo:
+
+    - la construcción necesita manufactura,
+    - la manufactura necesita minería,
+    - el transporte necesita energía,
+    - y todos los sectores pueden depender entre sí.
+
+    Debido a esto, un aumento en la demanda de un sector genera cambios
+    en muchos otros sectores relacionados.
+
+    Estas relaciones son conocidas como:
+
+    ✅ Encadenamientos productivos.
+
+    ---
+
+    # 📊 ¿Qué son las matrices insumo-producto?
+
+    Las matrices insumo-producto representan matemáticamente
+    las relaciones económicas entre sectores productivos.
+
+    Cada valor de la matriz indica cuánto necesita un sector
+    de otro sector para producir una unidad de producción.
+
+    Por ejemplo:
+
+    si manufactura necesita recursos de minería,
+    la matriz mostrará esa dependencia mediante un coeficiente numérico.
+
+    ---
+
+    # 🧮 Fórmula principal del modelo
 
     x = (I - A)^(-1)d
 
-    ---
-
-    ## 📌 Elementos del modelo
-
-    ### 🔹 Matriz A
-    Representa los coeficientes técnicos entre sectores económicos.
-    Cada valor indica cuánto necesita un sector de otro para producir.
-
-    ### 🔹 Matriz identidad I
-    Matriz especial utilizada para construir el sistema económico.
-
-    ### 🔹 Vector d
-    Representa la demanda final de los sectores económicos.
-
-    ### 🔹 Vector x
-    Representa la producción total requerida para satisfacer la demanda.
-
-    ### 🔹 Matriz inversa
-    Permite resolver sistemas de ecuaciones lineales y calcular la solución del modelo.
+    Esta fórmula permite calcular la producción total requerida
+    para satisfacer una determinada demanda económica.
 
     ---
 
-    ## 📐 Conceptos matemáticos utilizados
+    # 📌 Explicación de cada elemento
+
+    ## 🔹 Matriz A
+
+    La matriz A representa los coeficientes técnicos.
+
+    Cada número de esta matriz indica cuánto necesita un sector
+    de otro sector para producir.
+
+    Es la base principal del modelo de Leontief.
+
+    ---
+
+    ## 🔹 Matriz identidad I
+
+    La matriz identidad es una matriz especial utilizada
+    en álgebra lineal.
+
+    Tiene unos en la diagonal principal y ceros en el resto de posiciones.
+
+    Se utiliza para construir la matriz (I - A).
+
+    ---
+
+    ## 🔹 Vector d
+
+    El vector d representa la demanda final de los sectores económicos.
+
+    Es decir, cuánto necesita producir cada sector
+    según las necesidades del mercado.
+
+    ---
+
+    ## 🔹 Vector x
+
+    El vector x representa la producción total requerida.
+
+    Incluye tanto:
+    - la demanda directa,
+    - como las necesidades indirectas entre sectores.
+
+    ---
+
+    # 📐 Conceptos matemáticos utilizados
+
+    El proyecto utiliza varios conceptos de álgebra lineal:
 
     ✅ Matrices cuadradas  
+    ✅ Sistemas de ecuaciones lineales  
     ✅ Matriz identidad  
     ✅ Matriz inversa  
     ✅ Determinantes  
-    ✅ Sistemas de ecuaciones lineales  
     ✅ Álgebra lineal computacional  
 
     ---
 
-    ## 🔄 Encadenamientos productivos
+    # 🔄 Sistemas de ecuaciones lineales
 
-    Los sectores económicos no funcionan de forma aislada.
-    Cuando aumenta la demanda de un sector,
-    otros sectores deben producir más recursos e insumos.
+    El modelo de Leontief puede interpretarse como
+    un sistema de ecuaciones lineales donde cada ecuación
+    representa un sector económico.
 
-    Por ejemplo:
-
-    Construcción ➜ Manufactura ➜ Minería
-
-    Esto genera relaciones de dependencia conocidas como
-    encadenamientos productivos.
+    Resolver el sistema permite calcular la producción
+    necesaria para satisfacer la demanda.
 
     ---
 
-    ## ⚠️ Invertibilidad de la matriz
+    # 🔁 ¿Qué significa que una matriz sea invertible?
 
-    Para resolver el modelo,
+    Para resolver el modelo correctamente,
     la matriz (I - A) debe ser invertible.
 
-    Si no es invertible:
+    Matemáticamente, una matriz invertible:
+    - tiene solución única,
+    - posee determinante diferente de cero,
+    - y permite calcular su matriz inversa.
 
-    ❌ el sistema no tiene solución única  
-    ❌ no se puede calcular la producción requerida  
-    ❌ existe una inconsistencia matemática o económica
+    Si la matriz no es invertible:
 
-    Matemáticamente esto ocurre cuando el determinante de la matriz es igual a cero.
+    ❌ no existe una solución única  
+    ❌ el sistema económico no puede resolverse correctamente  
+    ❌ no es posible calcular la producción requerida  
+
+    Esto puede interpretarse como una inconsistencia
+    o dependencia excesiva entre sectores económicos.
+
+    ---
+
+    # 📈 Interpretación económica
+
+    Los resultados del modelo permiten identificar
+    cuáles sectores generan mayores efectos sobre otros sectores.
+
+    Algunos sectores poseen una mayor influencia económica
+    debido a que suministran recursos o materiales importantes.
+
+    Por ejemplo:
+
+    Construcción ➜ necesita manufactura  
+    Manufactura ➜ necesita minería  
+    Transporte ➜ necesita energía  
+
+    Esto demuestra que la economía funciona como
+    un sistema interconectado.
+
+    ---
+
+    # 🌎 Aplicaciones reales del modelo
+
+    El modelo de Leontief se utiliza en:
+
+    ✅ análisis económico nacional  
+    ✅ estudios de productividad  
+    ✅ planeación económica  
+    ✅ políticas públicas  
+    ✅ análisis industrial  
+    ✅ estudios de impacto económico  
+
+    Instituciones como el DANE y bancos centrales
+    utilizan matrices insumo-producto para realizar análisis económicos.
+
+    ---
+
+    # ⚠️ Limitaciones del modelo
+
+    Aunque el modelo es muy útil,
+    presenta algunas limitaciones importantes:
+
+    - supone relaciones lineales constantes,
+    - utiliza coeficientes técnicos fijos,
+    - simplifica el comportamiento real de la economía,
+    - y no considera cambios tecnológicos o sociales.
+
+    Aun así, sigue siendo una herramienta muy importante
+    para el análisis económico y matemático.
 
     </div>
     """, unsafe_allow_html=True)
@@ -242,7 +368,10 @@ elif st.session_state.pantalla == "info":
 # =========================
 elif st.session_state.pantalla == "sectores":
 
-    st.markdown('<div class="section">📋 Seleccionar sectores</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="section">📋 Seleccionar sectores</div>',
+        unsafe_allow_html=True
+    )
 
     seleccionados = st.multiselect(
         "Escoge exactamente 4 sectores:",
@@ -266,7 +395,10 @@ elif st.session_state.pantalla == "demandas":
 
     sectores = st.session_state.sectores
 
-    st.markdown('<div class="section">📥 Ingresar demandas</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="section">📥 Ingresar demandas</div>',
+        unsafe_allow_html=True
+    )
 
     demandas = []
 
@@ -333,7 +465,10 @@ elif st.session_state.pantalla == "resultados":
     d = st.session_state.d
     sectores = st.session_state.sectores
 
-    st.markdown('<div class="section">📈 Resultados</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="section">📈 Resultados</div>',
+        unsafe_allow_html=True
+    )
 
     cols = st.columns(4)
 
@@ -356,13 +491,15 @@ elif st.session_state.pantalla == "resultados":
     fig.add_bar(
         x=sectores,
         y=d,
-        name="📥 Demanda"
+        name="📥 Demanda",
+        marker_color="#9b59b6"
     )
 
     fig.add_bar(
         x=sectores,
         y=x,
-        name="📈 Producción"
+        name="📈 Producción",
+        marker_color="#8e44ad"
     )
 
     fig.update_layout(
