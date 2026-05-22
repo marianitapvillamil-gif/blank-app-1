@@ -346,61 +346,89 @@ elif st.session_state.pantalla == "demandas":
         # ==========================================
         # VALIDACIÓN
         # ==========================================
-        if abs(determinante) < 1e-10:
+       if abs(determinante) < 1e-10:
 
-            st.error(f"""
+    st.error(f"""
 ❌ No es posible resolver el modelo de Leontief.
 
 La matriz (I - A) no es invertible.
+""")
 
-📌 Determinante calculado:
-{determinante:.6f}
+    st.markdown("## 📐 Verificación matemática")
+
+    st.write("### 1️⃣ Matriz identidad (I)")
+    st.write(I)
+
+    st.write("### 2️⃣ Matriz de coeficientes técnicos (A)")
+    st.write(A)
+
+    st.write("### 3️⃣ Matriz calculada (I - A)")
+    st.write(matriz)
+
+    st.write("### 4️⃣ Determinante de (I - A)")
+    st.latex(r"det(I-A)")
+
+    st.write(f"""
+Valor obtenido:
+
+det(I-A) = {determinante:.6f}
+""")
+
+    st.markdown("""
+━━━━━━━━━━━━━━━━━━━━━━
+
+## ❓ ¿Por qué esto significa que no es invertible?
+
+Una matriz solamente puede invertirse cuando su determinante
+es diferente de cero.
+
+En este caso:
+
+✅ Si det(I-A) ≠ 0 → existe matriz inversa  
+❌ Si det(I-A) = 0 → NO existe matriz inversa  
+
+Como el determinante obtenido es cero,
+la matriz pierde independencia lineal.
+
+Esto significa que algunas filas dependen matemáticamente de otras,
+por lo que el sistema deja de tener solución única.
 
 ━━━━━━━━━━━━━━━━━━━━━━
 
-🔎 ¿Qué ocurrió?
+## 📘 Relación con el modelo de Leontief
 
-La matriz perdió independencia lineal,
-lo que significa que algunas filas
-dependen matemáticamente de otras.
+El modelo necesita calcular:
+
+""")
+
+    st.latex(r"x=(I-A)^{-1}d")
+
+    st.markdown("""
+Pero si la matriz (I-A) no tiene inversa:
+
+❌ no puede calcularse (I-A)^(-1)  
+❌ no puede resolverse el sistema  
+❌ no puede obtenerse la producción total requerida  
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+## 📈 Interpretación económica
+
+Esto puede representar una economía con dependencia excesiva
+entre algunos sectores productivos.
+
+En términos prácticos,
+el sistema económico pierde estabilidad matemática
+y el modelo deja de generar resultados confiables.
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+## 💡 Conclusión
+
+La matriz no es invertible porque su determinante es cero.
 
 Por esta razón,
-el sistema económico deja de tener
-una solución única.
-
-━━━━━━━━━━━━━━━━━━━━━━
-
-📐 Explicación matemática
-
-El modelo de Leontief necesita calcular:
-
-(I - A)^(-1)
-
-Pero una matriz solo puede invertirse
-si su determinante es diferente de cero.
-
-Cuando el determinante es cero:
-
-❌ no existe matriz inversa  
-❌ el sistema se vuelve singular  
-❌ no puede resolverse correctamente  
-
-━━━━━━━━━━━━━━━━━━━━━━
-
-📈 Interpretación económica
-
-Esto puede representar una dependencia excesiva
-entre sectores económicos.
-
-Es decir,
-algunos sectores dependen tanto de otros
-que el sistema pierde estabilidad matemática.
-
-━━━━━━━━━━━━━━━━━━━━━━
-
-💡 Esta simulación fue agregada
-con fines educativos para demostrar
-qué ocurre cuando una matriz no es invertible.
+el modelo de Leontief no puede resolverse correctamente.
 """)
 
         else:
