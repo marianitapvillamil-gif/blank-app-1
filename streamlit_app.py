@@ -96,14 +96,14 @@ if "pantalla" not in st.session_state:
 # SECTORES
 # ==========================================
 sectores_totales = [
-    "🐄 Ganadería",
-    "⛏️ Minas",
-    "🏭 Manufactura",
-    "🏗️ Construcción",
-    "🛒 Comercio",
-    "🚚 Transporte",
-    "⚡ Energía",
-    "💼 Servicios"
+    "Ganadería 🐄",
+    "Minas ⛏️",
+    "Manufactura 🏭",
+    "Construcción 🏗️",
+    "Comercio 🛒",
+    "Transporte 🚚",
+    "Energía ⚡",
+    "Servicios 💼"
 ]
 
 # ==========================================
@@ -346,35 +346,35 @@ elif st.session_state.pantalla == "demandas":
         # ==========================================
         # VALIDACIÓN
         # ==========================================
-       if abs(determinante) < 1e-10:
+        if abs(determinante) < 1e-10:
 
-    st.error(f"""
+            st.error("""
 ❌ No es posible resolver el modelo de Leontief.
 
 La matriz (I - A) no es invertible.
 """)
 
-    st.markdown("## 📐 Verificación matemática")
+            st.markdown("## 📐 Verificación matemática")
 
-    st.write("### 1️⃣ Matriz identidad (I)")
-    st.write(I)
+            st.write("### 1️⃣ Matriz identidad (I)")
+            st.write(I)
 
-    st.write("### 2️⃣ Matriz de coeficientes técnicos (A)")
-    st.write(A)
+            st.write("### 2️⃣ Matriz de coeficientes técnicos (A)")
+            st.write(A)
 
-    st.write("### 3️⃣ Matriz calculada (I - A)")
-    st.write(matriz)
+            st.write("### 3️⃣ Matriz calculada (I - A)")
+            st.write(matriz)
 
-    st.write("### 4️⃣ Determinante de (I - A)")
-    st.latex(r"det(I-A)")
+            st.write("### 4️⃣ Determinante de (I - A)")
+            st.latex(r"det(I-A)")
 
-    st.write(f"""
+            st.write(f"""
 Valor obtenido:
 
 det(I-A) = {determinante:.6f}
 """)
 
-    st.markdown("""
+            st.markdown("""
 ━━━━━━━━━━━━━━━━━━━━━━
 
 ## ❓ ¿Por qué esto significa que no es invertible?
@@ -398,12 +398,11 @@ por lo que el sistema deja de tener solución única.
 ## 📘 Relación con el modelo de Leontief
 
 El modelo necesita calcular:
-
 """)
 
-    st.latex(r"x=(I-A)^{-1}d")
+            st.latex(r"x=(I-A)^{-1}d")
 
-    st.markdown("""
+            st.markdown("""
 Pero si la matriz (I-A) no tiene inversa:
 
 ❌ no puede calcularse (I-A)^(-1)  
